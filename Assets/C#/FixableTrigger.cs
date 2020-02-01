@@ -10,6 +10,7 @@ public class FixableTrigger : MonoBehaviour
     public bool NeedRepair;
     public UnityEvent OnBroken, OnRepairFinished, OnStartRepair;
     private float t = 1;
+    private float gameOverTime = 10;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +22,12 @@ public class FixableTrigger : MonoBehaviour
     {
         if (NeedRepair)
         {
-
+            gameOverTime -= Time.deltaTime;
+            if (gameOverTime < 0)
+            {
+                NeedRepair = false;
+                GameManager.Instance.GameOver();
+            }
         }
     }
     public void Broken()
@@ -31,6 +37,7 @@ public class FixableTrigger : MonoBehaviour
     }
     private void Repair()
     {
+        NeedRepair = false;
         OnRepairFinished.Invoke();
     }
     public void StartRepair()

@@ -7,8 +7,17 @@ using UnityEditor;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
     public List<FixableTrigger> FixableObjs;
     public bool StartPlay = false;
+    public float MosterHp = 60f;
+
+    private bool first = true;
+
+    public void OnEnable()
+    {
+        Instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +36,29 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Play");
         StartPlay = true;
+    }
+    IEnumerator GameplayLoop()
+    {
+        float t = 5;
+        if (!first)
+            t = Random.Range(5f, 8f);
+        yield return new WaitForSeconds(t);
+
+        List<FixableTrigger> GoodItems = new List<FixableTrigger>();
+        foreach(var item in FixableObjs)
+        {
+            if (!item.NeedRepair)
+                GoodItems.Add(item);
+        }
+        int r = Random.Range(0, GoodItems.Count);
+        GoodItems[r].Broken();
+
+
+        yield break;
+    }
+    public void GameOver()
+    {
+        Debug.Log("GameOver");
     }
 }
 
