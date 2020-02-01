@@ -1,22 +1,24 @@
-﻿using System.Collections;
+﻿using Rewired;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MovementWithAsset : MonoBehaviour, INotification
 
 {
+    public int playerId = 0; // The Rewired player id of this character
     public float speed = 1;
-    private NewControls newControls = null;
 
-    private void Awake() => newControls = new NewControls();
-    private void OnEnable() => newControls.Newactionmap.Enable();
-    private void OnDisable() => newControls.Newactionmap.Disable();
-    void FixedUpdate() => Move();
     
 
+    private Player player; // The Rewired Player
     private bool canClimb = false;
     private Vector3 moveMent = new Vector3();
     private Rigidbody2D r_2d;
+
+    [System.NonSerialized] // Don't serialize this so the value is lost on an editor script recompile.
+    private bool initialized;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,25 +27,39 @@ public class MovementWithAsset : MonoBehaviour, INotification
         //NotificationCenter.Default.Post(this, NotificationKeys.MissionInfoRefresh);
     }
 
-    // Update is called once per frame
+    private void Initialize()
+    {
+        // Get the Rewired Player object for this player.
+        player = ReInput.players.GetPlayer(playerId);
 
+        initialized = true;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (!ReInput.isReady) return; // Exit if Rewired isn't ready. This would only happen during a script recompile in the editor.
+        if (!initialized) Initialize(); // Reinitialize after a recompile in the editor
+        
+    }
+
+    void FixedUpdate() => Move();
 
     private void Move() {
-        var mInput = newControls.Newactionmap.Newaction.ReadValue<Vector2>();
         
         if (canClimb)
         {
             moveMent = new Vector3
             {
-                x = mInput.x,
-                y = mInput.y,
+                x = player.GetAxis("Move Horizontal"),
+                y = player.GetAxis("Move Vertical"),
             }.normalized;
         }
         else
         {
             moveMent = new Vector3
             {
-                x = mInput.x,
+                x = player.GetAxis("Move Horizontal"),
             }.normalized;
         }
        
