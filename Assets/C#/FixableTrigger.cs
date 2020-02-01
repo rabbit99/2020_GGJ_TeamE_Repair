@@ -7,14 +7,16 @@ public class FixableTrigger : MonoBehaviour
 {
     public ToolPick.ToolType m_ToolType = ToolPick.ToolType.wrench;
     public MovementWithAsset CurrentPlayer;
+    public TimeCircleUI TimeCircle;
     public bool NeedRepair;
     public UnityEvent OnBroken, OnRepairFinished, OnStartRepair;
     private float t = 1;
     private float gameOverTime = 10;
+    private bool isRepairing;
     // Start is called before the first frame update
     void Start()
     {
-
+        TimeCircle.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -22,11 +24,17 @@ public class FixableTrigger : MonoBehaviour
     {
         if (NeedRepair)
         {
-            gameOverTime -= Time.deltaTime;
-            if (gameOverTime < 0)
+            if (!isRepairing)
             {
-                NeedRepair = false;
-                GameManager.Instance.GameOver();
+                TimeCircle.gameObject.SetActive(true);
+                TimeCircle.Circle.color = Color.red;
+                gameOverTime -= Time.deltaTime;
+                TimeCircle.Circle.fillAmount = gameOverTime / 10;
+                if (gameOverTime < 0)
+                {
+                    NeedRepair = false;
+                    GameManager.Instance.GameOver();
+                }
             }
         }
     }
@@ -38,7 +46,11 @@ public class FixableTrigger : MonoBehaviour
     private void Repair()
     {
         NeedRepair = false;
+        t = 1;
+        gameOverTime = 10;
+        isRepairing = false;
         OnRepairFinished.Invoke();
+        TimeCircle.gameObject.SetActive(false);
     }
     public void StartRepair()
     {
@@ -47,6 +59,9 @@ public class FixableTrigger : MonoBehaviour
     public void Repairing()
     {
         if (!NeedRepair) return;
+        isRepairing = true;
+        TimeCircle.gameObject.SetActive(true);
+        TimeCircle.Circle.color = Color.green;
         if (t > 0)
         {
             t -= Time.deltaTime;
@@ -55,11 +70,13 @@ public class FixableTrigger : MonoBehaviour
         {
             Repair();
         }
+        TimeCircle.Circle.fillAmount = 1 - t;
     }
     public void RepairGiveup()
     {
         if (!NeedRepair) return;
         t = 1;
+        isRepairing = false;
         Broken();
     }
 
@@ -70,7 +87,7 @@ public class FixableTrigger : MonoBehaviour
         if (movement != null)
         {
             NotificationCenter.Default.Post(this, NotificationKeys.InTheFixablePipe, collision.gameObject.name);
-            Debug.Log("Pipe Trigger In, " + collision.gameObject.name);
+            Debug.Log(this.gameObject.name + " Trigger In, " + collision.gameObject.name);
 
             CurrentPlayer = movement;
         }
@@ -80,8 +97,8 @@ public class FixableTrigger : MonoBehaviour
         MovementWithAsset movement = collision.GetComponent<MovementWithAsset>();
         if (movement != null)
         {
-            NotificationCenter.Default.Post(this, NotificationKeys.OutTheFixablePipe);
-            Debug.Log("Pipe Trigger Out, " + collision.gameObject.name);
+            NotificationCenter.Default.Post(this, NotificationKeys.OutTheFixablePipe, collision.gameObject.name);
+            Debug.Log(this.gameObject.name + " Trigger Out, " + collision.gameObject.name);
 
             CurrentPlayer = null;
         }

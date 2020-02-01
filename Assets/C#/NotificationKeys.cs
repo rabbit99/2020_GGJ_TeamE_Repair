@@ -8,4 +8,5 @@ public class NotificationKeys
 
     public const string InTheFixablePipe = "InTheFixablePipe";
     public const string OutTheFixablePipe = "OutTheFixablePipe";
+    public const string RepairFinish = "RepairFinish";
 }

@@ -8,6 +8,8 @@ public class ToolPick : MonoBehaviour
     public ToolType m_ToolType;
     private BoxCollider2D b2d;
     private Rigidbody2D r_2d;
+    public bool Picking;
+    public SpriteRenderer OutlineObj;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,30 +27,39 @@ public class ToolPick : MonoBehaviour
     {
         b2d.enabled = false;
         r_2d.bodyType = RigidbodyType2D.Kinematic;
+        Picking = true;
     }
 
     public void BeThrowAway()
     {
         b2d.enabled = true;
         r_2d.bodyType = RigidbodyType2D.Dynamic;
+        Picking = false;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (Picking) return;
+
         MovementWithAsset movement = collision.GetComponent<MovementWithAsset>();
         if (movement != null)
         {
+            if (movement.IsPicking) return;
             NotificationCenter.Default.Post(this, NotificationKeys.InTheTool, collision.gameObject.name);
             Debug.Log("Tool Trigger In, " + collision.gameObject.name);
+            OutlineObj.material.SetColor("_SolidOutline", Color.red);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if (Picking) return;
+
         MovementWithAsset movement = collision.GetComponent<MovementWithAsset>();
         if (movement != null)
         {
             NotificationCenter.Default.Post(this, NotificationKeys.OutTheTool, collision.gameObject.name);
             Debug.Log("Tool Trigger Out, " + collision.gameObject.name);
+            OutlineObj.material.SetColor("_SolidOutline", Color.clear);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -21,7 +22,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -36,6 +37,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Play");
         StartPlay = true;
+        StartCoroutine(GameplayLoop());
     }
     IEnumerator GameplayLoop()
     {
@@ -45,26 +47,34 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(t);
 
         List<FixableTrigger> GoodItems = new List<FixableTrigger>();
-        foreach(var item in FixableObjs)
+        foreach (var item in FixableObjs)
         {
             if (!item.NeedRepair)
                 GoodItems.Add(item);
         }
-        int r = Random.Range(0, GoodItems.Count);
-        GoodItems[r].Broken();
-
-
+        if (GoodItems.Count > 0)
+        {
+            int r = Random.Range(0, GoodItems.Count);
+            GoodItems[r].Broken();
+            CameraShake(1, new Vector3(1, 1, 0));
+        }
+        StartCoroutine(GameplayLoop());
         yield break;
     }
     public void GameOver()
     {
         Debug.Log("GameOver");
     }
+
+    public void CameraShake(float t, Vector3 force)
+    {
+        Camera.main.transform.DOShakePosition(t, force);
+    }
 }
 
 #if UNITY_EDITOR
 [CustomEditor(typeof(GameManager))]
-public class GameManagerInspector:Editor
+public class GameManagerInspector : Editor
 {
     GameManager gm;
     private void OnEnable()

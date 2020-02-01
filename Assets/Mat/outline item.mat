@@ -7,10 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: outline
+  m_Name: outline item
   m_Shader: {fileID: 4800000, guid: 62505ee61d20098489c6f861ed25cce1, type: 3}
-  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA _CONNECTEDALPHA_ON _OUTLINEENABLED_ON _OUTLINEMODE_SOLID
-    _OUTLINEPOSITION_OUTSIDE _OUTLINESHAPE_CONTOUR _TILEMODE_TILE
+  m_ShaderKeywords: ETC1_EXTERNAL_ALPHA _OUTLINEENABLED_ON _OUTLINEMODE_SOLID _OUTLINEPOSITION_OUTSIDE
+    _OUTLINESHAPE_CONTOUR _TILEMODE_TILE
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -32,6 +32,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MainTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MaskTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -41,23 +45,30 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - PixelSnap: 0
+    - _Alpha: 0.5
     - _AlphaThreshold: 0
     - _Angle: 45
-    - _ConnectedAlpha: 1
+    - _ConnectedAlpha: 0
     - _EnableExternalAlpha: 0
+    - _Outline: 0
     - _OutlineEnabled: 1
     - _OutlineMode: 0
     - _OutlinePosition: 2
     - _OutlineShape: 0
-    - _Thickness: 10
+    - _OutlineThickness: 1
+    - _ShowOutline: 1
+    - _Thickness: 1.38
     - _TileMode: 1
     - _Weight: 0.5
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _GradientOutline1: {r: 1, g: 1, b: 1, a: 1}
     - _GradientOutline2: {r: 1, g: 1, b: 1, a: 1}
     - _ImageOutline: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OutlineColor: {r: 0.7607844, g: 0.7607844, b: 0.7607844, a: 1}
+    - _OutlineColour: {r: 2, g: 1.482353, b: 0, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Sensitivity: {r: 1, g: 1, b: 0, a: 0}
     - _SolidOutline: {r: 1, g: 0, b: 0.42864943, a: 1}
