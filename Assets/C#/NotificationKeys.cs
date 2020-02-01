@@ -58,4 +58,8 @@ public class NotificationKeys
 
     //Gift
     public const string GiftRefresh = "GiftRefresh";                                  //刷新紅點
+
+    //Ladder
+    public const string LadderTrigger = "LadderTrigger";                            //觸碰到梯子
+    public const string LadderLeave = "LadderLeave";                                //離開梯子
 }
