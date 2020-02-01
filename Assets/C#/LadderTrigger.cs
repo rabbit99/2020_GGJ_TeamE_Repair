@@ -7,21 +7,21 @@ public class LadderTrigger : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         MovementWithAsset movement = collision.GetComponent<MovementWithAsset>();
-        if (movement!= null)
+        if (movement != null)
         {
-            NotificationCenter.Default.Post(this, NotificationKeys.InTheLadder);
-            Debug.Log("Ladder Trigger In");
+            NotificationCenter.Default.Post(this, NotificationKeys.InTheLadder, collision.gameObject.name);
+            Debug.Log("Ladder Trigger In, " + collision.gameObject.name);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -30,7 +30,7 @@ public class LadderTrigger : MonoBehaviour
         if (movement != null)
         {
             NotificationCenter.Default.Post(this, NotificationKeys.OutTheLadder);
-            Debug.Log("Ladder Trigger Out");
+            Debug.Log("Ladder Trigger Out, " + collision.gameObject.name);
         }
     }
 }
