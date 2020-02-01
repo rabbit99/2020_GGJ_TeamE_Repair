@@ -95,13 +95,19 @@ public class MovementWithAsset : MonoBehaviour, INotification
     {
         if (_noti.name == NotificationKeys.InTheLadder)
         {
-            canClimb = true;
-            r_2d.gravityScale = 0;
+            if((string)_noti.data == this.gameObject.name)
+            {
+                canClimb = true;
+                r_2d.gravityScale = 0;
+            }
         }
         if (_noti.name == NotificationKeys.OutTheLadder)
         {
-            canClimb = false;
-            r_2d.gravityScale = 1;
+            if ((string)_noti.data == this.gameObject.name)
+            {
+                canClimb = false;
+                r_2d.gravityScale = 1;
+            }
         }
     }
     #endregion
