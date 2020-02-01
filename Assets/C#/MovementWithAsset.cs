@@ -10,7 +10,8 @@ public class MovementWithAsset : MonoBehaviour
     private void Awake() => newControls = new NewControls();
     private void OnEnable() => newControls.Newactionmap.Enable();
     private void OnDisable() => newControls.Newactionmap.Disable();
-    void Update() => Move();
+    void FixedUpdate() => Move();
+    
 
     // Start is called before the first frame update
     void Start()
@@ -31,5 +32,6 @@ public class MovementWithAsset : MonoBehaviour
         }.normalized;
         //Debug.Log(" mInput.x" + mInput.x);
         transform.Translate(moveMent * speed * Time.deltaTime);
+        //GetComponent<Rigidbody2D>().pos
     }
 }
