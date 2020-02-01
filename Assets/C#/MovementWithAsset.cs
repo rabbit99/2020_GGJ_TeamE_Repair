@@ -16,9 +16,11 @@ public class MovementWithAsset : MonoBehaviour, INotification
 
     private bool canClimb = false;
     private Vector3 moveMent = new Vector3();
+    private Rigidbody2D r_2d;
     // Start is called before the first frame update
     void Start()
     {
+        r_2d = GetComponent<Rigidbody2D>();
         AddNotificationObserver();
         //NotificationCenter.Default.Post(this, NotificationKeys.MissionInfoRefresh);
     }
@@ -68,10 +70,12 @@ public class MovementWithAsset : MonoBehaviour, INotification
         if (_noti.name == NotificationKeys.InTheLadder)
         {
             canClimb = true;
+            r_2d.gravityScale = 0;
         }
         if (_noti.name == NotificationKeys.OutTheLadder)
         {
             canClimb = false;
+            r_2d.gravityScale = 1;
         }
     }
     #endregion
