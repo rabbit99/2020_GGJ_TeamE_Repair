@@ -13,6 +13,8 @@ public class MovementWithAsset : MonoBehaviour, INotification
     private void OnDisable() => newControls.Newactionmap.Disable();
     void Update() => Move();
 
+    private bool canClimb = false;
+    private Vector3 moveMent = new Vector3();
     // Start is called before the first frame update
     void Start()
     {
@@ -25,12 +27,23 @@ public class MovementWithAsset : MonoBehaviour, INotification
 
     private void Move() {
         var mInput = newControls.Newactionmap.Newaction.ReadValue<Vector2>();
-
-        var moveMent = new Vector3
+        
+        if (canClimb)
         {
-            x = mInput.x,
-            y = mInput.y,
-        }.normalized;
+            moveMent = new Vector3
+            {
+                x = mInput.x,
+                y = mInput.y,
+            }.normalized;
+        }
+        else
+        {
+            moveMent = new Vector3
+            {
+                x = mInput.x,
+            }.normalized;
+        }
+       
         //Debug.Log(" mInput.x" + mInput.x);
         transform.Translate(moveMent * speed * Time.deltaTime);
     }
@@ -38,39 +51,26 @@ public class MovementWithAsset : MonoBehaviour, INotification
     #region Notification
     void AddNotificationObserver()
     {
-        //NotificationCenter.Default.AddObserver(this, NotificationKeys.LeaveShop);
-        //NotificationCenter.Default.AddObserver(this, NotificationKeys.StageCountChange);
-        //NotificationCenter.Default.AddObserver(this, NotificationKeys.QueryStagesFinished);
+        NotificationCenter.Default.AddObserver(this, NotificationKeys.InTheLadder);
+        NotificationCenter.Default.AddObserver(this, NotificationKeys.OutTheLadder);
     }
 
     void RemoveNotificationObserver()
     {
-        //NotificationCenter.Default.RemoveObserver(this, NotificationKeys.LeaveShop);
-        //NotificationCenter.Default.RemoveObserver(this, NotificationKeys.StageCountChange);
-        //NotificationCenter.Default.RemoveObserver(this, NotificationKeys.QueryStagesFinished);
+        NotificationCenter.Default.RemoveObserver(this, NotificationKeys.InTheLadder);
+        NotificationCenter.Default.RemoveObserver(this, NotificationKeys.OutTheLadder);
     }
 
     public void OnNotify(Notification _noti)
     {
-        //if (_noti.name == NotificationKeys.StageCountChange)
-        //{
-        //    //Debug.Log("StageCountChange " + (int)_noti.data);
-        //    InputStageCount_ValueChanged((int)_noti.data);
-
-        //}
-        //else if (_noti.name == NotificationKeys.LeaveShop)
-        //{
-        //    mSetStage.RefreshLimit();
-        //    moneyLabel.text = Main.instance.ParseDataMgr.userData.Money.ToString();
-
-        //}
-        //else if (_noti.name == NotificationKeys.QueryStagesFinished)
-        //{
-        //    //更新stage count ui
-        //    //Debug.Log("QueryStagesFinished " + (int)_noti.data);
-        //    InputStageCount_ValueChanged((int)_noti.data);
-        //    isSaveAsDraft = true;
-        //}
+        if (_noti.name == NotificationKeys.InTheLadder)
+        {
+            canClimb = true;
+        }
+        if (_noti.name == NotificationKeys.OutTheLadder)
+        {
+            canClimb = false;
+        }
     }
     #endregion
 }
