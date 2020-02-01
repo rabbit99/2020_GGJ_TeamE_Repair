@@ -29,7 +29,7 @@ public class LadderTrigger : MonoBehaviour
         MovementWithAsset movement = collision.GetComponent<MovementWithAsset>();
         if (movement != null)
         {
-            NotificationCenter.Default.Post(this, NotificationKeys.OutTheLadder);
+            NotificationCenter.Default.Post(this, NotificationKeys.OutTheLadder, collision.gameObject.name);
             Debug.Log("Ladder Trigger Out, " + collision.gameObject.name);
         }
     }
