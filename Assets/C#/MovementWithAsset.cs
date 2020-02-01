@@ -95,6 +95,7 @@ public class MovementWithAsset : MonoBehaviour, INotification
     {
         if (_noti.name == NotificationKeys.InTheLadder)
         {
+            Debug.Log("(string)_noti.data" + (string)_noti.data);
             if((string)_noti.data == this.gameObject.name)
             {
                 canClimb = true;
@@ -103,6 +104,7 @@ public class MovementWithAsset : MonoBehaviour, INotification
         }
         if (_noti.name == NotificationKeys.OutTheLadder)
         {
+            Debug.Log("(string)_noti.data" + (string)_noti.data);
             if ((string)_noti.data == this.gameObject.name)
             {
                 canClimb = false;
