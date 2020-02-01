@@ -8,12 +8,12 @@ public class FixableTrigger : MonoBehaviour
     public ToolPick.ToolType m_ToolType = ToolPick.ToolType.wrench;
     public MovementWithAsset CurrentPlayer;
     public bool NeedRepair;
-    public UnityEvent OnBroken, OnRepair;
+    public UnityEvent OnBroken, OnRepairFinished, OnStartRepair;
     private float t = 1;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -21,7 +21,7 @@ public class FixableTrigger : MonoBehaviour
     {
         if (NeedRepair)
         {
-            
+
         }
     }
     public void Broken()
@@ -29,9 +29,31 @@ public class FixableTrigger : MonoBehaviour
         NeedRepair = true;
         OnBroken.Invoke();
     }
-    public void Repair()
+    private void Repair()
     {
-        OnRepair.Invoke();
+        OnRepairFinished.Invoke();
+    }
+    public void StartRepair()
+    {
+        if (!NeedRepair) return;
+    }
+    public void Repairing()
+    {
+        if (!NeedRepair) return;
+        if (t > 0)
+        {
+            t -= Time.deltaTime;
+        }
+        else
+        {
+            Repair();
+        }
+    }
+    public void RepairGiveup()
+    {
+        if (!NeedRepair) return;
+        t = 1;
+        Broken();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
