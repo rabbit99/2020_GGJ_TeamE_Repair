@@ -67,6 +67,15 @@ public class MovementWithAsset : MonoBehaviour, INotification
         //Debug.Log(" mInput.x" + mInput.x);
         transform.Translate(moveMent * speed * Time.deltaTime);
         //GetComponent<Rigidbody2D>().pos
+
+        if(moveMent.x > 0)
+        {
+            transform.localScale = new Vector2(-0.279f, 0.279f);
+        }
+        else
+        {
+            transform.localScale = new Vector2(0.279f, 0.279f);
+        }
     }
 
     #region Notification
