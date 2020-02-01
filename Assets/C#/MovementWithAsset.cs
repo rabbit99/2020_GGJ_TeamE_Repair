@@ -21,6 +21,7 @@ public class MovementWithAsset : MonoBehaviour, INotification
 
     [System.NonSerialized] // Don't serialize this so the value is lost on an editor script recompile.
     private bool initialized;
+    private string lastMovement = "right";
 
     // Start is called before the first frame update
     void Start()
@@ -71,13 +72,28 @@ public class MovementWithAsset : MonoBehaviour, INotification
         transform.Translate(moveMent * speed * Time.deltaTime);
         //GetComponent<Rigidbody2D>().pos
 
+        string face = null;
         if(moveMent.x > 0)
         {
             transform.localScale = new Vector2(-0.279f, 0.279f);
+            lastMovement = "right";
         }
-        else
+        else if(moveMent.x < 0)
         {
             transform.localScale = new Vector2(0.279f, 0.279f);
+            lastMovement = "left";
+        }
+        else if(moveMent.x == 0)
+        {
+            switch (lastMovement)
+            {
+                case "right":
+                    transform.localScale = new Vector2(-0.279f, 0.279f);
+                    break;
+                case "left":
+                    transform.localScale = new Vector2(0.279f, 0.279f);
+                    break;
+            }
         }
 
         fire = player.GetButtonDown("Fire");
