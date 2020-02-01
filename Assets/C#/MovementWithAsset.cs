@@ -38,15 +38,16 @@ public class MovementWithAsset : MonoBehaviour, INotification
     // Update is called once per frame
     void Update()
     {
-        if (!ReInput.isReady) return; // Exit if Rewired isn't ready. This would only happen during a script recompile in the editor.
-        if (!initialized) Initialize(); // Reinitialize after a recompile in the editor
+        
         
     }
 
     void FixedUpdate() => Move();
 
     private void Move() {
-        
+        if (!ReInput.isReady) return; // Exit if Rewired isn't ready. This would only happen during a script recompile in the editor.
+        if (!initialized) Initialize(); // Reinitialize after a recompile in the editor
+        Debug.Log("Move");
         if (canClimb)
         {
             moveMent = new Vector3
