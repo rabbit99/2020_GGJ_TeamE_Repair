@@ -7,6 +7,9 @@ public class UIColdDown : MonoBehaviour
 {
     private Image target;
     private bool flag = false;
+
+    public delegate void RepairCallBack();
+    public RepairCallBack repairCallBack;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +22,11 @@ public class UIColdDown : MonoBehaviour
         if (flag)
         {
             target.fillAmount = target.fillAmount - Time.deltaTime;
+            if (target.fillAmount <= 0)
+            {
+                repairCallBack?.Invoke();
+                flag = false;
+            }
         }
         else
         {
