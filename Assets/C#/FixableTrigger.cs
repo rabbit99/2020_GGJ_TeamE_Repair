@@ -56,6 +56,7 @@ public class FixableTrigger : MonoBehaviour
         gameOverTime = 10;
         isRepairing = false;
         OnRepairFinished.Invoke();
+        NotificationCenter.Default.Post(this, NotificationKeys.RepairFinish, CurrentPlayer.gameObject.name);
         TimeCircle.gameObject.SetActive(false);
         GameManager.Instance.MonsterHurt();
     }
