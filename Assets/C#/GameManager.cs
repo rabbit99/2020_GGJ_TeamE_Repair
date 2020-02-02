@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -16,8 +17,11 @@ public class GameManager : MonoBehaviour
     public int RobotHp = 5;
     public Text MonsterHpText;
     public Text RobotHpText;
+    public SpriteRenderer Cover, Win, Lose;
+    public GameObject RestartButton;
 
     private bool first = true;
+
 
     public void OnEnable()
     {
@@ -26,7 +30,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        RestartButton.SetActive(false);
     }
 
     // Update is called once per frame
@@ -44,6 +48,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Play");
         StartPlay = true;
         StartCoroutine(GameplayLoop());
+        NotificationCenter.Default.Post(this, NotificationKeys.GameStart);
     }
     IEnumerator GameplayLoop()
     {
@@ -51,6 +56,7 @@ public class GameManager : MonoBehaviour
         if (!first)
             t = Random.Range(5f, 8f);
         yield return new WaitForSeconds(t);
+        if (!StartPlay) yield break;
 
         List<FixableTrigger> GoodItems = new List<FixableTrigger>();
         foreach (var item in FixableObjs)
@@ -70,6 +76,25 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         Debug.Log("GameOver");
+        StartPlay = false;
+        NotificationCenter.Default.Post(this, NotificationKeys.GameOver);
+        CameraShake(5, new Vector3(0.3f, 0.3f, 0));
+        Cover.DOFade(1, 5).OnComplete(() =>
+        {
+            Cover.DOFade(0, 2);
+            if (MonsterHp > RobotHp)//lose
+            {
+                Win.DOFade(0, 0);
+                Lose.DOFade(1, 0);
+            }
+            else if (MonsterHp < RobotHp)//win
+            {
+                Win.DOFade(1, 0);
+                Lose.DOFade(0, 0);
+            }
+            RestartButton.SetActive(true);
+        });
+        
     }
 
     public void CameraShake(float t, Vector3 force)
@@ -80,11 +105,19 @@ public class GameManager : MonoBehaviour
     {
         MonsterHp--;
         NotificationCenter.Default.Post(this, NotificationKeys.MonsterHurt);
+        if (MonsterHp <= 0)
+            GameOver();
     }
     public void RobotHurt()
     {
         RobotHp--;
         NotificationCenter.Default.Post(this, NotificationKeys.RobotHurt);
+        if (RobotHp <= 0)
+            GameOver();
+    }
+    public void RestartScene()
+    {
+        SceneManager.LoadScene("Map");
     }
 }
 
