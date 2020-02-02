@@ -103,6 +103,7 @@ public class MovementWithAsset : MonoBehaviour, INotification
         }
 
         fire = player.GetButtonDown("Fire");
+        if (player.GetButtonDown("Fire")) Debug.Log("Fire");
         if (fire && item && !isPicking)
         {
             Debug.Log("do Pick up tool");

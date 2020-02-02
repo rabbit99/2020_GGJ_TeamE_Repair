@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
 
         }
         MonsterHpText.text = "Monster: " + MonsterHp;
-        RobotHpText.text = "Monster: " + RobotHp;
+        RobotHpText.text = "Robot: " + RobotHp;
     }
     public void Play()
     {
