@@ -16,7 +16,7 @@ public class TV : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((ulong)VP.frame >= VP.frameCount-2 && (ulong)VP.frame<1000)
+        if ((ulong)VP.frame >= VP.frameCount-10 && (ulong)VP.frame<1000)
         {
             print("1");
             VideoClip temp = VP.clip;
