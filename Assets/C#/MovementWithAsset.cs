@@ -20,6 +20,7 @@ public class MovementWithAsset : MonoBehaviour, INotification
     private bool isPicking = false;
     private GameObject item;
     private Animator _animator;
+    private bool isGameOver = false;
 
     private FixableTrigger fixable;
     public bool Repairing;
@@ -61,6 +62,7 @@ public class MovementWithAsset : MonoBehaviour, INotification
     {
         if (!ReInput.isReady) return; // Exit if Rewired isn't ready. This would only happen during a script recompile in the editor.
         if (!initialized) Initialize(); // Reinitialize after a recompile in the editor
+        if (isGameOver) return;
         Debug.Log("Move");
         if (canClimb)
         {
@@ -196,6 +198,7 @@ public class MovementWithAsset : MonoBehaviour, INotification
         NotificationCenter.Default.AddObserver(this, NotificationKeys.InTheFixablePipe);
         NotificationCenter.Default.AddObserver(this, NotificationKeys.OutTheFixablePipe);
         NotificationCenter.Default.AddObserver(this, NotificationKeys.RepairFinish);
+        NotificationCenter.Default.AddObserver(this, NotificationKeys.GameOver);
     }
 
     void RemoveNotificationObserver()
@@ -207,6 +210,7 @@ public class MovementWithAsset : MonoBehaviour, INotification
         NotificationCenter.Default.RemoveObserver(this, NotificationKeys.InTheFixablePipe);
         NotificationCenter.Default.RemoveObserver(this, NotificationKeys.OutTheFixablePipe);
         NotificationCenter.Default.RemoveObserver(this, NotificationKeys.RepairFinish);
+        NotificationCenter.Default.RemoveObserver(this, NotificationKeys.GameOver);
     }
 
     public void OnNotify(Notification _noti)
@@ -266,6 +270,10 @@ public class MovementWithAsset : MonoBehaviour, INotification
             {
                 _animator.SetBool("repairing", false);
             }
+        }
+        if (_noti.name == NotificationKeys.GameOver)
+        {
+            isGameOver = true;
         }
     }
     #endregion
