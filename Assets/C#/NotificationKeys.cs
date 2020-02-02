@@ -11,4 +11,8 @@ public class NotificationKeys
     public const string RepairFinish = "RepairFinish";
     public const string MonsterHurt = "MonsterHurt";
     public const string RobotHurt = "RobotHurt";
+    public const string GameStart = "GameStart";
+    public const string GameOver = "GameOver";
+
+
 }

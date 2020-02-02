@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     private bool first = true;
 
+
     public void OnEnable()
     {
         Instance = this;
@@ -44,6 +45,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Play");
         StartPlay = true;
         StartCoroutine(GameplayLoop());
+        NotificationCenter.Default.Post(this, NotificationKeys.GameStart);
     }
     IEnumerator GameplayLoop()
     {
@@ -51,6 +53,7 @@ public class GameManager : MonoBehaviour
         if (!first)
             t = Random.Range(5f, 8f);
         yield return new WaitForSeconds(t);
+        if (!StartPlay) yield break;
 
         List<FixableTrigger> GoodItems = new List<FixableTrigger>();
         foreach (var item in FixableObjs)
@@ -70,6 +73,16 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         Debug.Log("GameOver");
+        StartPlay = false;
+        NotificationCenter.Default.Post(this, NotificationKeys.GameOver);
+        if (MonsterHp > RobotHp)//lose
+        {
+
+        }
+        else if (MonsterHp < RobotHp)//win
+        {
+
+        }
     }
 
     public void CameraShake(float t, Vector3 force)
@@ -80,11 +93,15 @@ public class GameManager : MonoBehaviour
     {
         MonsterHp--;
         NotificationCenter.Default.Post(this, NotificationKeys.MonsterHurt);
+        if (MonsterHp <= 0)
+            GameOver();
     }
     public void RobotHurt()
     {
         RobotHp--;
         NotificationCenter.Default.Post(this, NotificationKeys.RobotHurt);
+        if (RobotHp <= 0)
+            GameOver();
     }
 }
 
