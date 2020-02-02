@@ -26,11 +26,8 @@ public class TV : MonoBehaviour, INotification
         {
             print("1");
             VideoClip temp = VP.clip;
-            while(VP.clip == temp)
-            {
-                VP.clip = clip[Random.Range(0, clip.Length)];
-                VP.frame = 1;
-            }
+            VP.clip = clip[1];
+            VP.frame = 1;
             print(VP.clip);
         }
     }
