@@ -15,6 +15,7 @@ public class TV : MonoBehaviour, INotification
     void Start()
     {
         VP = gameObject.GetComponent<VideoPlayer>();
+        AddNotificationObserver();
     }
 
     // Update is called once per frame
@@ -79,12 +80,14 @@ public class TV : MonoBehaviour, INotification
 
     public void OnNotify(Notification _noti)
     {
-        if (_noti.name == NotificationKeys.InTheLadder)
+        if (_noti.name == NotificationKeys.MonsterHurt)
         {
-            playResult = true;
+            Debug.Log("E");
+            PlayMonsterHurtClip();
         }
-        if (_noti.name == NotificationKeys.InTheLadder)
+        if (_noti.name == NotificationKeys.RobotHurt)
         {
+            PlayRobotHurtClip();
         }
     }
     #endregion

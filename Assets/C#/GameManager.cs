@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
     {
         float t = 5;
         if (!first)
-            t = Random.Range(5f, 8f);
+            t = Random.Range(9f, 12f);
         yield return new WaitForSeconds(t);
         if (!StartPlay) yield break;
 
