@@ -22,6 +22,7 @@ public class MovementWithAsset : MonoBehaviour, INotification
 
     private FixableTrigger fixable;
     public bool Repairing;
+    private Tweener tweener;
 
     [System.NonSerialized] // Don't serialize this so the value is lost on an editor script recompile.
     private bool initialized;
@@ -107,12 +108,13 @@ public class MovementWithAsset : MonoBehaviour, INotification
             Debug.Log("do Pick up tool");
             item.GetComponent<ToolPick>().BePickUp();
             item.transform.SetParent(this.gameObject.transform);
-            item.transform.DOLocalMove(new Vector3(0, 1.91f, 0), 0.2f);
+            tweener = item.transform.DOLocalMove(new Vector3(0, 1.91f, 0), 0.2f);
             isPicking = true;
         }
         else if (fire && item && isPicking)
         {
             if (fixable) return;
+            tweener.Kill();
             Debug.Log("do Throw tool away");
             item.GetComponent<ToolPick>().BeThrowAway();
             item.transform.SetParent(null);
