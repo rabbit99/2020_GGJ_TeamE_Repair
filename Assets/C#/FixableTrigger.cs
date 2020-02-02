@@ -62,6 +62,7 @@ public class FixableTrigger : MonoBehaviour
     public void StartRepair()
     {
         if (!NeedRepair) return;
+        OnStartRepair.Invoke();
     }
     public void Repairing()
     {

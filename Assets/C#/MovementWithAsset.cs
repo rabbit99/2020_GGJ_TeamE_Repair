@@ -24,6 +24,7 @@ public class MovementWithAsset : MonoBehaviour, INotification
     private FixableTrigger fixable;
     public bool Repairing;
     private Tweener tweener;
+    public FixableTrigger PartnerFixable;
 
     [System.NonSerialized] // Don't serialize this so the value is lost on an editor script recompile.
     private bool initialized;
@@ -150,6 +151,13 @@ public class MovementWithAsset : MonoBehaviour, INotification
                     Repairing = false;
                     fixable.RepairGiveup();
                 }
+            }
+        }
+        if (fixable && !item)
+        {
+            if (fixable.m_ToolType == ToolPick.ToolType.nut)
+            {
+
             }
         }
     }

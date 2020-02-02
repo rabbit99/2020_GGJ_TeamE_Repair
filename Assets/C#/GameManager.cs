@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
         {
             int r = Random.Range(0, GoodItems.Count);
             GoodItems[r].Broken();
-            CameraShake(1, new Vector3(1, 1, 0));
+            CameraShake(1, new Vector3(0.3f, 0.3f, 0));
         }
         StartCoroutine(GameplayLoop());
         yield break;

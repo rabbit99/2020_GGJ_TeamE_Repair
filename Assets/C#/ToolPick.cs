@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ToolPick : MonoBehaviour
 {
-    public enum ToolType { wrench, tape, nut }
+    public enum ToolType { wrench, tape, nut, none }
     public ToolType m_ToolType;
     private BoxCollider2D b2d;
     private Rigidbody2D r_2d;
@@ -15,6 +15,7 @@ public class ToolPick : MonoBehaviour
     {
         b2d = GetComponent<BoxCollider2D>();
         r_2d = GetComponent<Rigidbody2D>();
+        OutlineObj.material.SetColor("_SolidOutline", Color.clear);
     }
 
     // Update is called once per frame
