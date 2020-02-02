@@ -66,6 +66,7 @@ public class MovementWithAsset : MonoBehaviour, INotification
             if (_animator)
             {
                 _animator.SetBool("canClimb", true);
+                _animator.SetBool("running", false);
             }
             
             moveMent = new Vector3
@@ -73,17 +74,28 @@ public class MovementWithAsset : MonoBehaviour, INotification
                 x = player.GetAxis("Move Horizontal"),
                 y = player.GetAxis("Move Vertical"),
             }.normalized;
+
+            if (moveMent.y == 0)
+            {
+                _animator.SetBool("canClimb", false);
+            }
         }
         else
         {
             if (_animator)
             {
                 _animator.SetBool("canClimb", false);
+                _animator.SetBool("running", true);
             }
             moveMent = new Vector3
             {
                 x = player.GetAxis("Move Horizontal"),
             }.normalized;
+        }
+
+        if(moveMent.x == 0)
+        {
+            _animator.SetBool("running", false);
         }
 
         //Debug.Log(" mInput.x" + mInput.x);
