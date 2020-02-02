@@ -166,11 +166,14 @@ public class MovementWithAsset : MonoBehaviour, INotification
                         fixable.StartRepair();
                     }
                     fixable.Repairing();
+                    _animator.SetBool("repairing", true);
+                    Debug.Log("repairing");
                 }
                 if (player.GetButtonUp("Fire"))
                 {
                     Repairing = false;
                     fixable.RepairGiveup();
+                    _animator.SetBool("repairing", false);
                 }
             }
         }
@@ -255,6 +258,13 @@ public class MovementWithAsset : MonoBehaviour, INotification
             {
                 Debug.Log("Exit Pipe");
                 fixable = null;
+            }
+        }
+        if (_noti.name == NotificationKeys.RepairFinish)
+        {
+            if ((string)_noti.data == this.gameObject.name)
+            {
+                _animator.SetBool("repairing", false);
             }
         }
     }
