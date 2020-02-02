@@ -168,14 +168,29 @@ public class MovementWithAsset : MonoBehaviour, INotification
                         fixable.StartRepair();
                     }
                     fixable.Repairing();
-                    _animator.SetBool("repairing", true);
+                    if(item.GetComponent<ToolPick>().m_ToolType == ToolPick.ToolType.tape)
+                    {
+                        _animator.SetBool("repairingTape", true);
+                    }
+                    else
+                    {
+                        _animator.SetBool("repairing", true);
+                    }
+                    
                     Debug.Log("repairing");
                 }
                 if (player.GetButtonUp("Fire"))
                 {
                     Repairing = false;
                     fixable.RepairGiveup();
-                    _animator.SetBool("repairing", false);
+                    if (item.GetComponent<ToolPick>().m_ToolType == ToolPick.ToolType.tape)
+                    {
+                        _animator.SetBool("repairingTape", false);
+                    }
+                    else
+                    {
+                        _animator.SetBool("repairing", false);
+                    }
                 }
             }
         }
@@ -268,7 +283,14 @@ public class MovementWithAsset : MonoBehaviour, INotification
         {
             if ((string)_noti.data == this.gameObject.name)
             {
-                _animator.SetBool("repairing", false);
+                if (item.GetComponent<ToolPick>().m_ToolType == ToolPick.ToolType.tape)
+                {
+                    _animator.SetBool("repairingTape", false);
+                }
+                else
+                {
+                    _animator.SetBool("repairing", false);
+                }
             }
         }
         if (_noti.name == NotificationKeys.GameOver)
