@@ -19,6 +19,7 @@ public class MovementWithAsset : MonoBehaviour, INotification
     private bool fire;
     private bool isPicking = false;
     private GameObject item;
+    private Animator _animator;
 
     private FixableTrigger fixable;
     public bool Repairing;
@@ -31,6 +32,7 @@ public class MovementWithAsset : MonoBehaviour, INotification
     void Start()
     {
         r_2d = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
         AddNotificationObserver();
         //NotificationCenter.Default.Post(this, NotificationKeys.MissionInfoRefresh);
     }
@@ -59,6 +61,11 @@ public class MovementWithAsset : MonoBehaviour, INotification
         Debug.Log("Move");
         if (canClimb)
         {
+            if (_animator)
+            {
+                _animator.SetBool("canClimb", true);
+            }
+            
             moveMent = new Vector3
             {
                 x = player.GetAxis("Move Horizontal"),
@@ -67,6 +74,10 @@ public class MovementWithAsset : MonoBehaviour, INotification
         }
         else
         {
+            if (_animator)
+            {
+                _animator.SetBool("canClimb", false);
+            }
             moveMent = new Vector3
             {
                 x = player.GetAxis("Move Horizontal"),
