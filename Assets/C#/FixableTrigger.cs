@@ -32,8 +32,14 @@ public class FixableTrigger : MonoBehaviour
                 TimeCircle.Circle.fillAmount = gameOverTime / 10;
                 if (gameOverTime < 0)
                 {
+                    t = 1;
+                    gameOverTime = 10;
                     NeedRepair = false;
-                    GameManager.Instance.GameOver();
+                    isRepairing = false;
+                    OnRepairFinished.Invoke();
+                    TimeCircle.gameObject.SetActive(false);
+                   // GameManager.Instance.GameOver();
+                    GameManager.Instance.RobotHurt();
                 }
             }
         }
@@ -51,6 +57,7 @@ public class FixableTrigger : MonoBehaviour
         isRepairing = false;
         OnRepairFinished.Invoke();
         TimeCircle.gameObject.SetActive(false);
+        GameManager.Instance.MonsterHurt();
     }
     public void StartRepair()
     {

@@ -9,4 +9,6 @@ public class NotificationKeys
     public const string InTheFixablePipe = "InTheFixablePipe";
     public const string OutTheFixablePipe = "OutTheFixablePipe";
     public const string RepairFinish = "RepairFinish";
+    public const string MonsterHurt = "MonsterHurt";
+    public const string RobotHurt = "RobotHurt";
 }

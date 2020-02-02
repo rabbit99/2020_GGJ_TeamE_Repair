@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,7 +12,10 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public List<FixableTrigger> FixableObjs;
     public bool StartPlay = false;
-    public float MosterHp = 60f;
+    public int MonsterHp = 5;
+    public int RobotHp = 5;
+    public Text MonsterHpText;
+    public Text RobotHpText;
 
     private bool first = true;
 
@@ -32,6 +36,8 @@ public class GameManager : MonoBehaviour
         {
 
         }
+        MonsterHpText.text = "Monster: " + MonsterHp;
+        RobotHpText.text = "Robot: " + RobotHp;
     }
     public void Play()
     {
@@ -69,6 +75,16 @@ public class GameManager : MonoBehaviour
     public void CameraShake(float t, Vector3 force)
     {
         Camera.main.transform.DOShakePosition(t, force);
+    }
+    public void MonsterHurt()
+    {
+        MonsterHp--;
+        NotificationCenter.Default.Post(this, NotificationKeys.MonsterHurt);
+    }
+    public void RobotHurt()
+    {
+        RobotHp--;
+        NotificationCenter.Default.Post(this, NotificationKeys.RobotHurt);
     }
 }
 

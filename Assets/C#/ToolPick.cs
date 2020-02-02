@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ToolPick : MonoBehaviour
 {
-    public enum ToolType { wrench , tape , nut }
+    public enum ToolType { wrench, tape, nut }
     public ToolType m_ToolType;
     private BoxCollider2D b2d;
     private Rigidbody2D r_2d;
@@ -20,7 +20,7 @@ public class ToolPick : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void BePickUp()
@@ -46,7 +46,7 @@ public class ToolPick : MonoBehaviour
         {
             if (movement.IsPicking) return;
             NotificationCenter.Default.Post(this, NotificationKeys.InTheTool, collision.gameObject.name);
-            Debug.Log("Tool Trigger In, " + collision.gameObject.name);
+            Debug.Log(gameObject.name + " Trigger In, " + collision.gameObject.name);
             OutlineObj.material.SetColor("_SolidOutline", Color.red);
         }
     }
@@ -57,8 +57,9 @@ public class ToolPick : MonoBehaviour
         MovementWithAsset movement = collision.GetComponent<MovementWithAsset>();
         if (movement != null)
         {
+            if (movement.IsPicking) return;
             NotificationCenter.Default.Post(this, NotificationKeys.OutTheTool, collision.gameObject.name);
-            Debug.Log("Tool Trigger Out, " + collision.gameObject.name);
+            Debug.Log(gameObject.name + " Trigger Out, " + collision.gameObject.name);
             OutlineObj.material.SetColor("_SolidOutline", Color.clear);
         }
     }
