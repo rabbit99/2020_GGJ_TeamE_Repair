@@ -103,6 +103,7 @@ public class GameManager : MonoBehaviour
     }
     public void MonsterHurt()
     {
+        if (!StartPlay) return;
         MonsterHp--;
         NotificationCenter.Default.Post(this, NotificationKeys.MonsterHurt);
         if (MonsterHp <= 0)
@@ -110,6 +111,7 @@ public class GameManager : MonoBehaviour
     }
     public void RobotHurt()
     {
+        if (!StartPlay) return;
         RobotHp--;
         NotificationCenter.Default.Post(this, NotificationKeys.RobotHurt);
         if (RobotHp <= 0)
