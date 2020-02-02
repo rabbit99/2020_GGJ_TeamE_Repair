@@ -25,6 +25,7 @@ public class MovementWithAsset : MonoBehaviour, INotification
     public bool Repairing;
     private Tweener tweener;
     public FixableTrigger PartnerFixable;
+    public ParticleSystem NoiceParticle;
 
     [System.NonSerialized] // Don't serialize this so the value is lost on an editor script recompile.
     private bool initialized;
@@ -67,8 +68,10 @@ public class MovementWithAsset : MonoBehaviour, INotification
             {
                 _animator.SetBool("canClimb", true);
                 _animator.SetBool("running", false);
+                var emission = NoiceParticle.emission;
+                emission.rateOverTime = 0;
             }
-            
+
             moveMent = new Vector3
             {
                 x = player.GetAxis("Move Horizontal"),
@@ -78,6 +81,8 @@ public class MovementWithAsset : MonoBehaviour, INotification
             if (moveMent.y == 0)
             {
                 _animator.SetBool("canClimb", false);
+                var emission = NoiceParticle.emission;
+                emission.rateOverTime = 0;
             }
         }
         else
@@ -86,6 +91,8 @@ public class MovementWithAsset : MonoBehaviour, INotification
             {
                 _animator.SetBool("canClimb", false);
                 _animator.SetBool("running", true);
+                var emission = NoiceParticle.emission;
+                emission.rateOverTime = 10;
             }
             moveMent = new Vector3
             {
@@ -93,9 +100,11 @@ public class MovementWithAsset : MonoBehaviour, INotification
             }.normalized;
         }
 
-        if(moveMent.x == 0)
+        if (moveMent.x == 0)
         {
             _animator.SetBool("running", false);
+            var emission = NoiceParticle.emission;
+            emission.rateOverTime = 0;
         }
 
         //Debug.Log(" mInput.x" + mInput.x);
@@ -149,7 +158,7 @@ public class MovementWithAsset : MonoBehaviour, INotification
         {
             if (fixable.m_ToolType == item.GetComponent<ToolPick>().m_ToolType)
             {
-                if (player.GetButton("Fire")&& fixable.NeedRepair)
+                if (player.GetButton("Fire") && fixable.NeedRepair)
                 {
                     if (!Repairing)
                     {
